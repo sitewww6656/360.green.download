@@ -4,359 +4,349 @@
   <meta content="yes" name="apple-mobile-web-app-capable">
   <meta content="yes" name="apple-touch-fullscreen">
   <meta content="black" name="apple-mobile-web-app-status-bar-style">
-  <title>官方安全访问</title>
-  <!-- 引入qrcode.js库 -->
+  <title>官方认证-安全访问</title>
+  <!-- 引入二维码生成库 -->
   <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* 全屏容器 */
-body, html {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #fff;
+    }
 
-.container {
-    width: 100%;
-    height: 100vh;
-    background-color: #f8f9fa;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
+    /* 主容器 - 完全居中 */
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+    }
 
-/* 安全标志 */
-.security-badge {
-    display: flex;
-    align-items: center;
-    margin-bottom: 12px;
-}
+    /* 安全标志 */
+    .security-badge {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-.security-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #28a745;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 10px;
-}
+    .security-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #28a745;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      margin-right: 8px;
+    }
 
-.security-text {
-    font-size: 15px;
-    color: #28a745;
-    font-weight: 600;
-}
+    .security-subtext {
+      font-size: 14px;
+      color: #28a745;
+    }
 
-/* 标题 */
-.title {
-    font-size: 24px;
-    color: #28a745;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-}
+    /* 主标题 */
+    .main-title {
+      font-size: 22px;
+      color: #28a745;
+      font-weight: bold;
+      margin: 15px 0;
+    }
 
-/* 核心提示 */
-.tip {
-    color: #dc3545;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 15px 0;
-    text-align: center;
-    line-height: 1.6;
-}
+    /* 二维码提示 */
+    .qrcode-desc {
+      font-size: 15px;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
 
-/* 二维码容器 */
-.qrcode-box {
-    width: 240px;
-    height: 240px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-    margin: 10px 0 25px;
-}
+    /* 二维码容器 - 居中显示 */
+    .qrcode-box {
+      width: 240px;
+      height: 240px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
+    }
 
-#qrcode {
-    width: 100%;
-    height: 100%;
-}
+    #qrcode {
+      width: 100%;
+      height: 100%;
+    }
 
-/* 非微信环境操作步骤 */
-.steps {
-    width: 100%;
-    max-width: 300px;
-    margin-top: 10px;
-    display: none;
-}
+    /* 操作步骤 */
+    .steps {
+      width: 100%;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
 
-.step {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 12px;
-    font-size: 15px;
-    color: #343a40;
-}
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #333;
+    }
 
-.step-num {
-    width: 24px;
-    height: 24px;
-    background: #dc3545;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 13px;
-    margin-right: 12px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: #28a745;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      margin-right: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
 
-/* 浏览器下载提示 */
-.browser-download-tip {
-    color: #28a745;
-    font-size: 15px;
-    font-weight: 600;
-    margin-top: 20px;
-    text-align: center;
-    display: none;
-}
+    /* 浏览器下载提示 */
+    .browser-tip {
+      color: #28a745;
+      font-size: 15px;
+      font-weight: 500;
+      display: none;
+    }
 
-/* 微信专属覆盖层（新增模糊效果） */
-.wechat-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* 模糊+半透明叠加，强化聚焦 */
-    background-color: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px); /* 核心模糊效果 */
-    -webkit-backdrop-filter: blur(8px); /* 兼容Safari/微信浏览器 */
-    z-index: 9999;
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 30px;
-}
+    /* 微信遮罩层 */
+    .wechat-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-.overlay-content {
-    background-color: white;
-    padding: 25px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 320px;
-    text-align: center;
-    /* 卡片阴影+轻微放大，增强层次感 */
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    transform: scale(1.02);
-}
+    .overlay-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      width: 100%;
+    }
 
-.overlay-title {
-    color: #dc3545;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .overlay-title {
+      color: #dc3545;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-align: center;
+    }
 
-.overlay-title::before {
-    content: "⚠️";
-    margin-right: 10px;
-    font-size: 24px;
-}
+    .overlay-step {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
 
-.overlay-steps {
-    text-align: left;
-    margin-bottom: 20px;
-}
+    .overlay-step-num {
+      width: 24px;
+      height: 24px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
 
-.overlay-step {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #343a40;
-}
+    .overlay-confirm {
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 0;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 15px;
+      cursor: pointer;
+    }
 
-.overlay-step-num {
-    width: 28px;
-    height: 28px;
-    background: #dc3545;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    margin-right: 15px;
-    flex-shrink: 0;
-}
-
-.overlay-confirm {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 0;
-    width: 100%;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    /* 按钮hover效果，提升交互感 */
-    transition: background-color 0.3s;
-}
-
-.overlay-confirm:hover {
-    background-color: #c82333;
-}
-</style>
+    /* iframe容器 */
+    .content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
+  <div class="container">
     <!-- 安全标志 -->
     <div class="security-badge">
-        <div class="security-icon">✓</div>
-        <div class="security-text">官方安全认证 · 已通过检测</div>
+      <div class="security-icon">✓</div>
+      <div class="main-title">官方安全验证通过</div>
     </div>
-    
-    <div class="title">官方安全验证通过</div>
-    
-    <!-- 核心提示 -->
-    <div class="tip">截图保存二维码 或 直接微信扫码访问</div>
-    
-    <!-- 二维码（当前页面URL，自动继承HTTP/HTTPS） -->
+
+    <!-- 二维码提示 -->
+    <div class="qrcode-desc">截图保存二维码 或 直接微信扫码访问</div>
+
+    <!-- 二维码容器 -->
     <div class="qrcode-box">
-        <div id="qrcode"></div>
+      <div id="qrcode"></div>
     </div>
-    
-    <!-- 非微信环境操作步骤 -->
-    <div class="steps" id="normalSteps">
-        <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text">截图保存二维码 或 直接扫码访问</div>
-        </div>
-        <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text">浏览器自动启动下载，无需额外操作</div>
-        </div>
+
+    <!-- 操作步骤 -->
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>截图保存二维码 或 直接扫码访问</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>浏览器自动启动下载，无需额外操作</div>
+      </div>
     </div>
-    
+
     <!-- 浏览器下载提示 -->
-    <div class="browser-download-tip" id="browserDownloadTip">
-        已在浏览器打开，正在自动下载...
-    </div>
-</div>
+    <div class="browser-tip" id="browserTip">已在浏览器打开，正在自动下载...</div>
+  </div>
 
-<!-- 微信专属覆盖层 -->
-<div class="wechat-overlay" id="wechatOverlay">
+  <!-- 微信遮罩层 -->
+  <div class="wechat-overlay" id="wechatOverlay">
     <div class="overlay-content">
-        <div class="overlay-title">微信内无法下载！</div>
-        <div class="overlay-steps">
-            <div class="overlay-step">
-                <div class="overlay-step-num">1</div>
-                <div class="overlay-step-text">点击右上角「···」图标</div>
-            </div>
-            <div class="overlay-step">
-                <div class="overlay-step-num">2</div>
-                <div class="overlay-step-text">选择「在浏览器打开」</div>
-            </div>
-            <div class="overlay-step">
-                <div class="overlay-step-num">3</div>
-                <div class="overlay-step-text">浏览器自动下载，无需额外操作</div>
-            </div>
-        </div>
-        <!-- <button class="overlay-confirm" onclick="hideOverlay()">知道了，去操作</button> -->
+      <div class="overlay-title">微信内无法直接下载</div>
+      <div class="overlay-step">
+        <div class="overlay-step-num">1</div>
+        <div>点击右上角「···」图标</div>
+      </div>
+      <div class="overlay-step">
+        <div class="overlay-step-num">2</div>
+        <div>选择「在浏览器打开」</div>
+      </div>
+      <button class="overlay-confirm" onclick="hideWechatOverlay()">知道了</button>
     </div>
-</div>
+  </div>
 
-<script>
-// 解码目标URL（核心逻辑）
-function getTargetUrl() {
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const encoded = urlParams.get('c');
-        if (!encoded) throw new Error('无访问参数');
-        const url = atob(encoded.replace(/-/g, '+').replace(/_/g, '/'));
-        new URL(url);
-        return url;
-    } catch (e) {
-        alert('链接无效，请检查后重试');
-        return null;
+  <script>
+    // 检测微信浏览器
+    function isWechatBrowser() {
+      return navigator.userAgent.toLowerCase().includes('micromessenger');
     }
-}
 
-// 生成当前页面二维码
-function initQrcode() {
-    try {
+    // 隐藏微信遮罩层
+    function hideWechatOverlay() {
+      document.getElementById('wechatOverlay').style.display = 'none';
+    }
+
+    // 生成二维码
+    function initQrcode() {
+      try {
         new QRCode(document.getElementById('qrcode'), {
-            text: window.location.href, // 自动继承HTTP/HTTPS
-            width: 210,
-            height: 210,
-            colorDark: '#000',
-            colorLight: '#fff',
-            correctLevel: QRCode.CorrectLevel.H
+          text: window.location.href,
+          width: 210,
+          height: 210,
+          colorDark: '#000',
+          colorLight: '#fff',
+          correctLevel: QRCode.CorrectLevel.H
         });
-    } catch (e) {
-        document.getElementById('qrcode').innerHTML = '<div style="color:#dc3545;font-size:14px;text-align:center;line-height:210px;">二维码生成失败</div>';
+      } catch (e) {
+        document.getElementById('qrcode').innerHTML = '<div style="color:#f00;font-size:14px;text-align:center;line-height:210px;">二维码生成失败</div>';
+      }
     }
-}
 
-// 检测微信浏览器
-function isWechatBrowser() {
-    return navigator.userAgent.toLowerCase().includes('micromessenger');
-}
+    // 解析参数并处理下载
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const encodedParam = urlParams.get('c');
+      const tureurl = encodedParam ? atob(encodedParam) : '';
 
-// 隐藏微信覆盖层
-function hideOverlay() {
-    document.getElementById('wechatOverlay').style.display = 'none';
-}
+      // 初始化二维码
+      initQrcode();
 
-// 非微信环境自动下载
-function autoDownloadInBrowser() {
-    if (isWechatBrowser()) {
+      // 微信环境处理
+      if (isWechatBrowser()) {
         document.getElementById('wechatOverlay').style.display = 'flex';
-        return;
-    }
-    
-    document.getElementById('browserDownloadTip').style.display = 'block';
-    document.getElementById('normalSteps').style.display = 'block';
-    const targetUrl = getTargetUrl();
-    if (!targetUrl) return;
-    
-    try {
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } catch (e) {
-        window.location.href = targetUrl;
-    }
-}
+      } else {
+        // 非微信环境显示下载提示
+        document.getElementById('browserTip').style.display = 'block';
+      }
 
-// 初始化
-window.onload = function() {
-    initQrcode();
-    autoDownloadInBrowser();
-};
-</script>
+      // 加载下载链接
+      if (tureurl && tureurl.includes('http')) {
+        const html = `<iframe class="content" onload="bindMouseWhee(this)" src="${tureurl}"></iframe>`;
+        document.writeln(html);
+      }
+    })();
+  </script>
+
+  <!-- 鼠标滚轮事件处理 -->
+  <script>
+    var firefox = navigator.userAgent.indexOf('Firefox') != -1;
+
+    function MouseWheel(e, doc) {
+      try {
+        e.preventDefault && e.preventDefault();
+        e.returnValue = false;
+        var up = firefox && e.detail < 0 || e.wheelDelta > 0;
+        doc.body.scrollTop = doc.documentElement.scrollTop += up ? -50 : 50;
+      } catch (e) {
+        console.log('跨域环境下无法控制滚动:', e);
+      }
+    }
+
+    function bindMouseWhee(ifr) {
+      try {
+        var isSameOrigin = false;
+        try {
+          var iframeOrigin = new URL(ifr.src).origin;
+          isSameOrigin = window.location.origin === iframeOrigin;
+        } catch (e) {
+          console.log('无法验证同源性:', e);
+        }
+
+        if (isSameOrigin) {
+          var doc = ifr.contentWindow.document;
+          if (firefox) {
+            doc.addEventListener('DOMMouseScroll', function(e) {
+              MouseWheel(e, doc);
+            }, false);
+          } else {
+            doc.onmousewheel = function(e) {
+              MouseWheel(e || ifr.contentWindow.event, doc);
+            };
+          }
+        } else {
+          console.log('检测到跨域iframe，不绑定滚动事件');
+        }
+      } catch (e) {
+        console.log('绑定滚动事件失败:', e);
+      }
+    }
+  </script>
 </body>
 </html>
